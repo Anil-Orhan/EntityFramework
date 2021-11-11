@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Entities.Abstract
+namespace Core.Business
 {
-    public interface IEntity
-
+    public class BusinessServiceBase
     {
+
 
 
     }

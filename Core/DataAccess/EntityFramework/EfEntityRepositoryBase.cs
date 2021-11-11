@@ -4,22 +4,23 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
-using DataAccess.Abstract;
-using Entities.Concrete;
+using Core.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace DataAccess.Concrete.EntitiyDramework
+namespace Core.DataAccess.EntityFramework
 {
-   public class EfProductDal:IProductDal
+    public class EfEntityRepositoryBase<TEntity,TContext> :IEntityRepository<TEntity>
+        where  TEntity:class,IEntity,new()
+        where TContext:DbContext,new()
     {
-        public void Add(Product entity)
+        public void Add(TEntity entity)
         {
             /*
              * using  ile yapılan işlem bittiği anda oluşturulan nesne bellekten silinir
              * Performans açısından context gibi performans gerektiren objelerde using kullanılması optimizasyon açısından önemlidir.
             */
             //IDisposable Pattern Implementation Of C#
-            using (NorthwindContext context=new NorthwindContext())
+            using (TContext context = new TContext())
             {
                 var addedEntity = context.Entry(entity); //verilen entity ile veri tabanındaki entityi eşle (Bu durumda bulamayacak)
                 addedEntity.State = EntityState.Added; //Bu nesneyi veri tabanına ekle
@@ -27,9 +28,9 @@ namespace DataAccess.Concrete.EntitiyDramework
             }
         }
 
-        public void Delete(Product entity)
+        public void Delete(TEntity entity)
         {
-            using (NorthwindContext context = new NorthwindContext())
+            using (TContext context = new TContext())
             {
                 var deletedEntity = context.Entry(entity); //verilen entity ile veri tabanındaki entityi eşle 
                 deletedEntity.State = EntityState.Deleted; //Bu nesneyi veri tabanından sil
@@ -37,9 +38,9 @@ namespace DataAccess.Concrete.EntitiyDramework
             }
         }
 
-        public void Update(Product entity)
+        public void Update(TEntity entity)
         {
-            using (NorthwindContext context = new NorthwindContext())
+            using (TContext context = new TContext())
             {
                 var updatedEntity = context.Entry(entity); //verilen entity ile veri tabanındaki entityi eşle 
                 updatedEntity.State = EntityState.Modified; //Bu nesneyi veri tabanında güncelle
@@ -47,29 +48,26 @@ namespace DataAccess.Concrete.EntitiyDramework
             }
         }
 
-        public Product Get(Expression<Func<Product, bool>> filter)
+        public TEntity Get(Expression<Func<TEntity, bool>> filter)
         {
-            using (NorthwindContext context = new NorthwindContext())
+            using (TContext context = new TContext())
             {
-                return context.Set<Product>().SingleOrDefault(filter);
+                return context.Set<TEntity>().SingleOrDefault(filter);
 
             }
         }
 
-      public  List<Product> GetAll(Expression<Func<Product, bool>> filter = null)
+        public List<TEntity> GetAll(Expression<Func<TEntity, bool>> filter = null)
         {
-            using (NorthwindContext context = new NorthwindContext())
+            using (TContext context = new TContext())
             {
-                return filter == null 
-                    ? context.Set<Product>().ToList() 
-                    : context.Set<Product>().Where(filter).ToList();
+                return filter == null
+                    ? context.Set<TEntity>().ToList()
+                    : context.Set<TEntity>().Where(filter).ToList();
             }
         }
-       
+
 
 
     }
-
-        
-    
 }

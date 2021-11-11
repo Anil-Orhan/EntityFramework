@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Entities.Concrete;
 using Microsoft.EntityFrameworkCore;
 
-namespace DataAccess.Concrete.EntitiyDramework
+namespace DataAccess.Concrete.EntitiyFramework
 { 
     //Context  : Db tabloları ile proje classlarını iliştirmek
    public class NorthwindContext:DbContext
@@ -21,6 +21,7 @@ namespace DataAccess.Concrete.EntitiyDramework
         //Db tabloları ile kendi oluşturduğumuz nesneleri ilişkilendirme
         public DbSet<Product> Products { get; set; }
         public DbSet<Category> Categories { get; set; }
-        public DbSet<Customer> Customers { get; set; } 
+        public DbSet<Customer> Customers { get; set; }
+        public DbSet<Order> Orders { get; set; }
     }
 }

@@ -5,13 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using Core.DataAccess;
 using Entities.Concrete;
-using Entities.DTOs;
 
 namespace DataAccess.Abstract
 {
-    public interface IProductDal:IEntityRepository<Product>
+   public interface IOrderDal:IEntityRepository<Order>
     {
 
-        List<ProductDetailDto> GetProductDetails();
     }
 }

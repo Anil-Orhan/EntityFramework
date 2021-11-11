@@ -1,0 +1,43 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Text;
+using System.Threading.Tasks;
+using Core.DataAccess.EntityFramework;
+using DataAccess.Abstract;
+using DataAccess.Concrete.EntitiyFramework;
+using Entities.Concrete;
+using Entities.DTOs;
+using Microsoft.EntityFrameworkCore;
+
+namespace DataAccess.Concrete.EntitiyFramework
+{
+   public class EfProductDal: EfEntityRepositoryBase<Product,NorthwindContext>, IProductDal
+    {
+
+        //DATA CRUD
+
+
+        public List<ProductDetailDto> GetProductDetails()
+        {
+            using (NorthwindContext context =new NorthwindContext())
+            {
+                var result = from p in context.Products
+                    join c in context.Categories on p.CategoryID equals c.CategoryId
+                    select new ProductDetailDto 
+                    {
+                        ProductID = p.ProductID,
+                        CategoryName = c.CategoryName,
+                        ProductName = p.ProductName,
+                        UnitsInStock = p.UnitsInStock
+
+                    };
+                return result.ToList();
+            }
+        }
+    }
+
+
+
+}
