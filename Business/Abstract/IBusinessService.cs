@@ -3,15 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Core.Utilities.Results;
 
 namespace Business.Abstract
 {
     public interface IBusinessService<T>
     {
-        void Add(T entity);
+        IResult Add(T entity);
         void Delete(T entity);
         void Update(T entity);
-        List<T> GetAll();
+        IDataResult<List<T>> GetAll();
         T GetById(int Id);
         
     }

@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Business.Abstract;
+using Business.Constants;
+using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
 
@@ -19,24 +21,25 @@ namespace Business.Concrete
 
         }
 
-        public void Add(Order entity)
+        public IResult Add(Order entity)
         {
-            throw new NotImplementedException();
+            _orderDal.Add(entity);
+            return new Result(true, Messages.ProductAdded);
         }
 
         public void Delete(Order entity)
         {
-            throw new NotImplementedException();
+            _orderDal.Delete(entity);
         }
 
         public void Update(Order entity)
         {
-            throw new NotImplementedException();
+            _orderDal.Update(entity);
         }
 
-        public List<Order> GetAll()
+        public IDataResult<List<Order>> GetAll()
         {
-            return _orderDal.GetAll();
+            return new DataResult<List<Order>>(_orderDal.GetAll(), true, "Products Listed!");
         }
 
         public Order GetById(int Id)

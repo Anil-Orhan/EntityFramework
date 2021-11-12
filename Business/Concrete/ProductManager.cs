@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Business.Abstract;
+using Business.Constants;
+using Core.Utilities.Results;
 using Entities.Concrete;
 using DataAccess.Abstract;
 using Entities.DTOs;
@@ -20,29 +22,40 @@ namespace Business.Concrete
         }
 
 
-        public void Add(Product product)
+        public IResult Add(Product product)
         {
-            throw new NotImplementedException();
+
+            if (product.ProductName.Length<2)
+            {
+                return new ErrorResult(Messages.ProductNameInvalid);
+            }
+            _productDal.Add(product);
+            return new Result(true,Messages.ProductAdded);
         }
 
         public void Delete(Product product)
         {
-            throw new NotImplementedException();
+            _productDal.Delete(product);
         }
 
         public void Update(Product product)
         {
-            throw new NotImplementedException();
+            _productDal.Update(product);
         }
 
-        public List<Product> GetAll()
+        public IDataResult<List<Product>> GetAll()
         {
-            return _productDal.GetAll();
-        }
+            if (DateTime.Now.Hour==22)
+            {
+                return new ErrorDataResult<List<Product>>(Messages.MaintenanceTime);
+            }
+            return new SuccessDataResult<List<Product>>(_productDal.GetAll(),Messages.ProductListed );
+        } 
+
 
         public Product GetById(int Id)
         {
-            throw new NotImplementedException();
+           return _productDal.Get(p => p.ProductID == Id);
         }
 
 
@@ -55,5 +68,7 @@ namespace Business.Concrete
         {
             return _productDal.GetProductDetails();
         }
+
+       
     }
 }

@@ -17,10 +17,10 @@ namespace ConsoleUI
             OrderManager orderManager = new OrderManager(new EfOrderDal());
             ProductManager productManager = new ProductManager(new EfProductDal());
 
-            var result = productManager.GetProductDetails();
-            foreach (var item in result)
+            var result = productManager.GetAll();
+            foreach (var item in result.Data)
             {
-                Console.WriteLine(item.ProductID+"--"+item.ProductName+"--"+item.UnitsInStock+"--"+item.CategoryName);
+                Console.WriteLine(item.ProductID+"--"+item.ProductName+"--"+item.UnitsInStock+"--"+item.UnitPrice);
             }
 
 
