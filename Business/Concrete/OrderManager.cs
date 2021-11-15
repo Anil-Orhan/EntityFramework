@@ -37,14 +37,15 @@ namespace Business.Concrete
             _orderDal.Update(entity);
         }
 
-        public IDataResult<List<Order>> GetAll()
+        public DataResult<List<Order>> GetAll()
         {
             return new DataResult<List<Order>>(_orderDal.GetAll(), true, "Products Listed!");
         }
 
-        public Order GetById(int Id)
+        public DataResult<Order> GetById(int Id)
         {
-            return _orderDal.Get(o => o.OrderID == Id);
+            
+            return new SuccessDataResult<Order>(_orderDal.Get(o => o.OrderID == Id),"This Order");
         }
     }
 }

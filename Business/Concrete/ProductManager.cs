@@ -43,19 +43,16 @@ namespace Business.Concrete
             _productDal.Update(product);
         }
 
-        public IDataResult<List<Product>> GetAll()
+        public DataResult<List<Product>> GetAll()
         {
-            if (DateTime.Now.Hour==22)
-            {
-                return new ErrorDataResult<List<Product>>(Messages.MaintenanceTime);
-            }
-            return new SuccessDataResult<List<Product>>(_productDal.GetAll(),Messages.ProductListed );
+           
+            return new SuccessDataResult<List<Product>>(_productDal.GetAll(),Messages.ProductListed);
         } 
 
 
-        public Product GetById(int Id)
+        public DataResult<Product> GetById(int Id)
         {
-           return _productDal.Get(p => p.ProductID == Id);
+           return new SuccessDataResult<Product>(_productDal.Get(p => p.ProductID == Id),"This Product");
         }
 
 

@@ -37,14 +37,14 @@ namespace Business.Concrete
             _customerDal.Update(entity);
         }
 
-        public IDataResult<List<Customer>> GetAll()
+        public DataResult<List<Customer>> GetAll()
         {
            return new SuccessDataResult<List<Customer>>(_customerDal.GetAll(),Messages.ProductListed);
         }
 
-        public Customer GetById(int Id)
+        public DataResult<Customer> GetById(int Id)
         {
-          return  _customerDal.Get(p => p.CustomerId == Id.ToString()); 
+          return  new SuccessDataResult<Customer>(_customerDal.Get(p => p.CustomerId == Id.ToString())); 
           //Northwind veritabanında  CustomerID string değerlidir. O yüzden .ToString kullandık. Kod hata vermeyecektir
           //Ancak çalışmayacaktır! Düzeltilecek
 

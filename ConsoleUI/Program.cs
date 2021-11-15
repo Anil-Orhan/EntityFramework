@@ -16,7 +16,7 @@ namespace ConsoleUI
         {
             OrderManager orderManager = new OrderManager(new EfOrderDal());
             ProductManager productManager = new ProductManager(new EfProductDal());
-
+           
             var result = productManager.GetAll();
             foreach (var item in result.Data)
             {
