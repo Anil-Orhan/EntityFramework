@@ -11,8 +11,8 @@ using DataAccess.Concrete.EntitiyFramework;
 
 namespace WebAPI.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
+    [Route("api/[controller]")]//URL
+    [ApiController] //AOP
     public class ProductsController : ControllerBase
     {
         private IProductService _productService;

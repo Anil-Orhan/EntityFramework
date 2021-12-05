@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Concrete.EntitiyFramework
 { 
-    //Context  : Db tabloları ile proje classlarını iliştirmek
+    //Context (İçerik)  : Db tabloları ile proje classlarını iliştirmek
    public class NorthwindContext:DbContext
     {
         //Db'nin tanıtılması için kullandığımız hazır virtual metot
