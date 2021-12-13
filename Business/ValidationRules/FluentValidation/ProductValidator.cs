@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Business.ValidationRules.FluentValidation
 {
-   public class ProductValidator:AbstractValidator<Product>//ProductValidator <Product> için bir Validator'dır!
+    public partial class ProductValidator:AbstractValidator<Product>//ProductValidator <Product> için bir Validator'dır!
     {
         public ProductValidator()
         {
@@ -18,8 +18,10 @@ namespace Business.ValidationRules.FluentValidation
             RuleFor(p => p.ProductName).NotEmpty();
             RuleFor(p => p.UnitPrice).NotEmpty();
             RuleFor(p => p.UnitPrice).GreaterThan(0);
-            RuleFor(p => p.UnitPrice).GreaterThan(10).When(p => p.CategoryID == 1);
-            RuleFor(p => p.ProductName).Must(StartWithA).WithMessage("Ürünler A harfi ile başlamalıdır!");
+            
+
+            // RuleFor(p => p.UnitPrice).GreaterThan(10).When(p => p.CategoryID == 1);
+            // RuleFor(p => p.ProductName).Must(StartWithA).WithMessage("Ürünler A harfi ile başlamalıdır!");
         }
 
         private bool StartWithA(string arg)

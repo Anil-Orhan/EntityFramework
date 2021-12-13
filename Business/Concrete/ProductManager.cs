@@ -13,24 +13,40 @@ using FluentValidation;
 using Business.ValidationRules.FluentValidation;
 using Core.CrossCuttingConcerns.Validation;
 using Core.Aspects.Autofac.Validation;
+using Core.Utilities.Business;
 
 namespace Business.Concrete
 {
    public class ProductManager:IProductService
     {
         private IProductDal _productDal;
-
-        public ProductManager(IProductDal productDal)
+        private ICategoryService _categoryService;
+       
+        //İş kuralı gereği categoriler tablosuna ulaşmamız gerektiğinden CategoryService Injection yaptık. Ancak DİKKAT ICategoryDal Inject etmedik. 
+        //Bir manager'ın içerisine başka bir nesnenin Dal'ı Inject edilmez!!!!!
+        public ProductManager(IProductDal productDal,ICategoryService categoryService)
         {
             _productDal = productDal;
+            _categoryService = categoryService;
         }
 
         [ValidationAspect(typeof(ProductValidator))]
         public IResult Add(Product product)
         {
+           IResult result= BusinessRules.Run(ChectIfProductCountOfCategoryCorrect(product.CategoryID), 
+                CheckProductNameDuplication(product.ProductName), CheckCategoryLimitTEST());
+
+            if (result!=null)
+            {
+                return result;
+            }
             _productDal.Add(product);
-            return new Result(true,Messages.ProductAdded);
+            return new SuccessResult(Messages.ProductAdded);
+            
+            
         }
+
+       
 
         public void Delete(Product product)
         {
@@ -65,6 +81,40 @@ namespace Business.Concrete
             return _productDal.GetProductDetails();
         }
 
-       
+
+        #region BusinessRules
+        private IResult ChectIfProductCountOfCategoryCorrect(int categoryId)
+        {
+            var result = _productDal.GetAll(p => p.CategoryID == categoryId).Count;
+            if (result >= 10)
+            {
+                return new ErrorResult(Messages.CategoryLimitError);
+
+            }
+            return new SuccessResult();
+        }
+
+        private IResult CheckProductNameDuplication(string productName)
+        {
+            var result = _productDal.GetAll(p => p.ProductName == productName).Any();
+            if (result)
+            {
+                return new ErrorResult(Messages.ProductNameDuplicationError);
+
+            }
+            return new SuccessResult();
+        }
+        private IResult CheckCategoryLimitTEST()
+        {
+            var result = _categoryService.GetAll().Data.Count; 
+            if (result>=15)
+            {
+                return new ErrorResult("Category Limit Exceded!");
+
+            }
+            return new SuccessResult();
+        }
+
+        #endregion
     }
 }
