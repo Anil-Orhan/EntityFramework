@@ -15,6 +15,8 @@ using Core.CrossCuttingConcerns.Validation;
 using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Business;
 using Business.BusinessAspects.Autofac;
+using Core.Aspects.Autofac.Caching;
+using Core.Aspects.Autofac.Transaction;
 
 namespace Business.Concrete
 {
@@ -32,6 +34,8 @@ namespace Business.Concrete
         }
         [SecuredOperation("product.add,admin")]
         [ValidationAspect(typeof(ProductValidator))]
+        [CacheRemoveAspect("IProductService.Get")]
+        [TransactionScopeAspect]
         public IResult Add(Product product)
         {
            IResult result= BusinessRules.Run(ChectIfProductCountOfCategoryCorrect(product.CategoryID), 
@@ -54,18 +58,20 @@ namespace Business.Concrete
             _productDal.Delete(product);
         }
 
+        [CacheRemoveAspect("IProductService.Get")]
         public void Update(Product product)
         {
             _productDal.Update(product);
         }
 
+         [CacheAspect]
         public DataResult<List<Product>> GetAll()
         {
            
             return new SuccessDataResult<List<Product>>(_productDal.GetAll(),Messages.ProductListed);
         } 
 
-
+        [CacheAspect]
         public DataResult<Product> GetById(int Id)
         {
            return new SuccessDataResult<Product>(_productDal.Get(p => p.ProductID == Id),"This Product");
@@ -115,6 +121,7 @@ namespace Business.Concrete
             }
             return new SuccessResult();
         }
+
 
         #endregion
     }

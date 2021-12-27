@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.DTOs;
+using Core.Utilities.Results;
 
 namespace Business.Abstract
 {
@@ -17,7 +18,7 @@ namespace Business.Abstract
         
         List<Product> GetByUnitPrice(decimal min,decimal max);
         List<ProductDetailDto> GetProductDetails();
-
+       
 
 
     }
