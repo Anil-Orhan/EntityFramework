@@ -48,6 +48,17 @@ namespace WebAPI.Controllers
 
             return BadRequest(result);
         }
+        [HttpGet("getbycategory")] //alias (Takma Ad) URL olarak eklenir
+        public IActionResult GetByCategory(int categoryId)
+        {
+            var result = _productService.GetByCategory(categoryId);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
 
         [HttpPost("add")]
         public IActionResult Add(Product product) //post

@@ -18,7 +18,7 @@ namespace Business.Abstract
         
         List<Product> GetByUnitPrice(decimal min,decimal max);
         List<ProductDetailDto> GetProductDetails();
-       
+        public DataResult<List<Product>> GetByCategory(int categoryId);
 
 
     }

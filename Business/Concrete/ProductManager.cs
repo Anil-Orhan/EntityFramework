@@ -76,6 +76,11 @@ namespace Business.Concrete
         {
            return new SuccessDataResult<Product>(_productDal.Get(p => p.ProductID == Id),"This Product");
         }
+        [CacheAspect]
+        public DataResult<List<Product>> GetByCategory(int categoryId)
+        {
+            return new SuccessDataResult<List<Product>>(_productDal.GetAll().Where(p=>p.CategoryID==categoryId).ToList(), "This Product");
+        }
 
 
         public List<Product> GetByUnitPrice(decimal min, decimal max)
